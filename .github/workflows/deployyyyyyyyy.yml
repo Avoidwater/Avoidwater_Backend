@@ -24,8 +24,8 @@ jobs:
       with:
         files: src/main/resources/application.yaml
       env:
-        external.weather.url: ${{ secrets.WEATHER_URL }}
-        external.weather.key: ${{ secrets.WEATHER_KEY }}
+        external.weather.url: ${{ secrets.WEATHER_API_URL }}
+        external.weather.key: ${{ secrets.WEATHER_API_KEY }}
 
     - name: Build with Gradle
       run: ./gradlew build -x test
