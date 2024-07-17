@@ -1,7 +1,6 @@
 package GD.avoidWater.weather;
 
 import GD.avoidWater.weather.usecase.WeatherApi;
-import GD.avoidWater.weather.usecase.data.request.WeatherRequest;
 import GD.avoidWater.weather.usecase.data.response.WeatherResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,13 +14,12 @@ public class WeatherController {
 
     private final WeatherApi api;
 
-    @PostMapping
-    public WeatherResponse get(@RequestBody WeatherRequest request) {
-        return api.get(
-                request.latitude(),
-                request.longitude(),
-                request.hour()
-        );
+    @GetMapping
+    public WeatherResponse get(
+            @RequestParam("latitude") Double latitude,
+            @RequestParam("longitude") Double longitude,
+            @RequestParam("hour") Integer hour) {
+        return api.get(latitude, longitude, hour);
     }
 }
 
