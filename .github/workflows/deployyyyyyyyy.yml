@@ -1,0 +1,56 @@
+name: CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Set yml file 
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: dodam-api/src/main/resources/application.yml
+      env:
+        external.weather.url: ${{ secrets. }}
+        external.weather.key: ${{ secrets. }}
+
+    - name: Build with Gradle
+      run: ./gradlew build -x test
+      
+    - name: Build Docker Image For Spring
+      run: |
+        docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/avoid-water:latest .
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/avoid-water:latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: EC2 Docker Run
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.LINUX_HOST }}
+          username: ${{ secrets.LINUX_USERNAME }}
+          password: ${{ secrets.LINUX_PASSWORD }}
+          port: ${{ secrets.LINUX_SSH_PORT }}
+          script: |
+            docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+            docker stop dodamdodam
+            docker rm dodamdodam
+            docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/avoid-water:latest
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/avoid-water:latest
+            docker run -d -p 33333:8080 --name dodamdodam ${{ secrets.DOCKERHUB_USERNAME }}/avoid-water:latest
