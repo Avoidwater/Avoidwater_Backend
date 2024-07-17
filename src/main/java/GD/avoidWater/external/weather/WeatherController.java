@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping(value = "/weather")
 @Slf4j
@@ -34,7 +32,6 @@ public class WeatherController {
                 hour
         );
     }
-
 }
 
 //precip_mm : 강수량(mm단위)
