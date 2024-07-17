@@ -22,10 +22,10 @@ jobs:
     - name: Set yml file 
       uses: microsoft/variable-substitution@v1
       with:
-        files: dodam-api/src/main/resources/application.yml
+        files: src/main/resources/application.yaml
       env:
-        external.weather.url: ${{ secrets. }}
-        external.weather.key: ${{ secrets. }}
+        external.weather.url: ${{ secrets.WEATHER_URL }}
+        external.weather.key: ${{ secrets.WEATHER_KEY }}
 
     - name: Build with Gradle
       run: ./gradlew build -x test
@@ -49,8 +49,8 @@ jobs:
           port: ${{ secrets.LINUX_SSH_PORT }}
           script: |
             docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-            docker stop dodamdodam
-            docker rm dodamdodam
+            docker stop avoid-water
+            docker rm avoid-water
             docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/avoid-water:latest
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/avoid-water:latest
-            docker run -d -p 33333:8080 --name dodamdodam ${{ secrets.DOCKERHUB_USERNAME }}/avoid-water:latest
+            docker run -d -p 33334:9991 --name avoid-water ${{ secrets.DOCKERHUB_USERNAME }}/avoid-water:latest
