@@ -2,3 +2,7 @@ external:
   weather:
     url: ${WEATHER_API_URL}
     key: ${WEATHER_API_KEY}
+
+server:
+  port:
+    9991
