@@ -4,4 +4,4 @@ external:
     key: ${WEATHER_API_KEY}
 
 server:
-  port: 9991 #
+  port: 9991
