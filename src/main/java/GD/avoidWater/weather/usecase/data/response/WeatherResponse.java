@@ -1,4 +1,4 @@
-package GD.avoidWater.external.weather.usecase.data.response;
+package GD.avoidWater.weather.usecase.data.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

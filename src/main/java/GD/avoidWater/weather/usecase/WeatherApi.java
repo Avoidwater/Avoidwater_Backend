@@ -1,7 +1,7 @@
-package GD.avoidWater.external.weather.usecase;
+package GD.avoidWater.weather.usecase;
 
 import GD.avoidWater.external.properties.WeatherApiProperties;
-import GD.avoidWater.external.weather.usecase.data.response.WeatherResponse;
+import GD.avoidWater.weather.usecase.data.response.WeatherResponse;
 import GD.avoidWater.external.webclient.WebClientSupport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -30,14 +30,9 @@ public class WeatherApi {
         //4. lang
         url += ("&lang=" + "ko");
 
-        /*
-        Map<String, Object> result = webClientSupport.get(url, Map.class).block();
-
-        for(Map.Entry<String, Object> entry : result.entrySet()) {
-            System.out.println("key: " + entry.getKey() + " value: " + entry.getValue().toString());
-        }*/
-
         return webClientSupport.get(url, WeatherResponse.class).block();
     }
 
 }
+
+//http://101.101.209.184:33334/weather?latitude=35.85548176&longitude=128.6375875&hour=20

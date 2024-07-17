@@ -31,6 +31,7 @@ public class WebClientSupport {
 
     private Function<ClientResponse, Mono<? extends Throwable>> onError() {
         return response -> {
+            System.out.println(response.logPrefix());
             throw new BaseException(response.statusCode().value(), "얘외 발생");
         };
     }
