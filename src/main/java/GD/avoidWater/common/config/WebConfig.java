@@ -10,8 +10,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*") // 허용할 출처
-                .allowedMethods("GET", "POST") // 허용할 HTTP method
-                .allowCredentials(true)
-                .maxAge(3000);
+                .allowedMethods("GET", "POST");
     }
 }
